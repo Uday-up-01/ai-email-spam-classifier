@@ -1,0 +1,51 @@
+{
+    "naive_bayes": {
+        "accuracy": 0.9776247848537005,
+        "precision": 0.9622093023255814,
+        "recall": 0.9622093023255814,
+        "f1_score": 0.9622093023255814,
+        "confusion_matrix": [
+            [
+                805,
+                13
+            ],
+            [
+                13,
+                331
+            ]
+        ]
+    },
+    "logistic_regression": {
+        "accuracy": 0.9750430292598967,
+        "precision": 0.972972972972973,
+        "recall": 0.9418604651162791,
+        "f1_score": 0.9571639586410635,
+        "confusion_matrix": [
+            [
+                809,
+                9
+            ],
+            [
+                20,
+                324
+            ]
+        ]
+    },
+    "selected_model": "Multinomial Naive Bayes",
+    "best_results": {
+        "accuracy": 0.9776247848537005,
+        "precision": 0.9622093023255814,
+        "recall": 0.9622093023255814,
+        "f1_score": 0.9622093023255814,
+        "confusion_matrix": [
+            [
+                805,
+                13
+            ],
+            [
+                13,
+                331
+            ]
+        ]
+    }
+}

@@ -1,0 +1,33 @@
+# Python virtual environment
+
+.venv/
+venv/
+env/
+
+# Python cache
+
+**pycache**/
+*.py[cod]
+
+# IDE and editor files
+
+.vscode/
+
+# Operating system files
+
+.DS_Store
+Thumbs.db
+
+# Temporary files
+
+*.log
+*.tmp
+.pytest_cache/
+
+# Local prediction history
+prediction_history.csv
+prediction_history.csv
+spamassassin_sample.csv
+
+text_data.pkl
+processed_data.pkl

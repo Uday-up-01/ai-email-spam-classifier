@@ -1,0 +1,25 @@
+{
+    "cross_validation": {
+        "Naive Bayes": {
+            "mean_f1": 0.9490047684433499,
+            "std_f1": 0.005130916646456388
+        },
+        "Logistic Regression": {
+            "mean_f1": 0.9501132322629425,
+            "std_f1": 0.003130435768568309
+        }
+    },
+    "naive_bayes_best_params": {
+        "alpha": 0.1
+    },
+    "logistic_regression_best_params": {
+        "C": 100
+    },
+    "selected_model": "Logistic Regression",
+    "final_test_results": {
+        "accuracy": 0.9853700516351118,
+        "precision": 0.9711815561959655,
+        "recall": 0.9796511627906976,
+        "f1_score": 0.975397973950796
+    }
+}

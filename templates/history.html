@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<meta name="description" content="View email spam classification prediction history.">
+
+<title>Prediction History | AI Spam Classifier</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+```
+
+</head>
+
+<body>
+
+```
+<!-- Navigation Bar -->
+<nav class="navbar">
+
+    <div class="logo">AI Spam Classifier</div>
+
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/history">Prediction History</a>
+    </div>
+
+</nav>
+
+<main class="container">
+
+    <!-- Page Header -->
+    <header class="hero">
+
+        <h1>Email Prediction History</h1>
+
+        <p>Review previously classified emails and their prediction results.</p>
+
+    </header>
+
+
+    <!-- History Card -->
+    <section class="card">
+
+        <h2>Classification Records</h2>
+
+        <p class="card-description">
+            Your previously classified emails are displayed below.
+        </p>
+
+        {% if records %}
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>Date and Time</th>
+                            <th>Email Content</th>
+                            <th>Prediction</th>
+                            <th>Confidence</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for record in records %}
+
+                            <tr>
+
+                                <td>{{ loop.index }}</td>
+
+                                <td>{{ record.Date }}</td>
+
+                                <td>
+                                    {{ record.Email[:200] }}
+                                </td>
+
+                                <td>
+
+                                    {% if record.Prediction == 'SPAM' %}
+
+                                        <span style="color: #dc2626; font-weight: 700;">
+                                            SPAM
+                                        </span>
+
+                                    {% else %}
+
+                                        <span style="color: #059669; font-weight: 700;">
+                                            NOT SPAM
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                                <td>
+                                    <strong>{{ record.Confidence }}%</strong>
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <p style="margin-top: 20px; color: #64748b;">
+                Total Predictions: <strong>{{ records|length }}</strong>
+            </p>
+
+        {% else %}
+
+            <div class="empty">
+
+                <h3>No Prediction History Available</h3>
+
+                <p>
+                    Classified emails will appear here.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+        <div style="margin-top: 25px;">
+
+            <a href="/" class="button-link">
+                ← Back to Home
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+
+        <p><strong>AI-Based Email Spam Classification System</strong></p>
+
+        <p>Powered by TF-IDF and Machine Learning</p>
+
+    </footer>
+
+</main>
+```
+
+</body>
+</html>

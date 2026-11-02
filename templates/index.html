@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered email spam detection using TF-IDF and Machine Learning.">
+
+
+<title>AI Email Spam Classifier</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+
+</head>
+
+<body>
+
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="logo">AI Spam Classifier</div>
+
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/history">Prediction History</a>
+    </div>
+</nav>
+
+<main class="container">
+
+    <!-- Header -->
+    <header class="hero">
+        <h1>AI Email Spam Classifier</h1>
+        <p>Intelligent email detection powered by Machine Learning</p>
+    </header>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Single Email Classification -->
+    <section class="card">
+
+        <h2>Check Your Email</h2>
+
+        <p class="card-description">
+            Enter your email content below to identify whether it is spam or legitimate.
+        </p>
+
+        <form method="POST" action="/">
+
+            <label for="email">Email Content</label>
+
+            <textarea
+                id="email"
+                name="email"
+                placeholder="Paste your email content here..."
+                required>{{ request.form.get('email', '') }}</textarea>
+
+            <button type="submit">Check Email</button>
+
+        </form>
+
+        <!-- Prediction Result -->
+        {% if result %}
+
+            <div class="result-card
+                {% if result.prediction == 'SPAM' %}
+                    result-spam
+                {% else %}
+                    result-ham
+                {% endif %}">
+
+                <h2 class="result-title">
+                    {% if result.prediction == 'SPAM' %}
+                        ⚠ SPAM EMAIL DETECTED
+                    {% else %}
+                        ✓ LEGITIMATE EMAIL
+                    {% endif %}
+                </h2>
+
+                <p>
+                    Classification:
+                    <strong>{{ result.prediction }}</strong>
+                </p>
+
+                <div class="confidence">
+                    Prediction Confidence: {{ result.confidence }}%
+                </div>
+
+                <div class="progress">
+                    <div class="progress-bar"
+                        data-confidence="{{ result.confidence }}">
+                    </div>
+                </div>
+
+                {% if result.spam_indicators %}
+
+                    <div style="margin-top: 22px;">
+
+                        <h3>🔍 Top Contributing Words</h3>
+
+                        <p class="card-description">
+                            Words that contributed to the model's prediction.
+                        </p>
+
+                        <div class="indicator-list">
+
+                            {% for word in result.spam_indicators %}
+                                <span class="indicator">{{ word }}</span>
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- Batch Email Classification -->
+    <section class="card">
+
+        <h2>Batch Email Classification</h2>
+
+        <p class="card-description">
+            Upload a .txt file containing multiple emails.
+            Each email should be written on a separate line.
+        </p>
+
+        <form method="POST"
+              action="/batch"
+              enctype="multipart/form-data">
+
+            <label for="file">Choose Email File</label>
+
+            <input
+                type="file"
+                id="file"
+                name="file"
+                accept=".txt"
+                required>
+
+            <button type="submit">Upload and Classify</button>
+
+        </form>
+
+    </section>
+
+
+    <!-- Batch Results -->
+    {% if batch_results %}
+
+        <section class="card">
+
+            <h2>Batch Classification Results</h2>
+
+            <p class="card-description">
+                Total Emails Classified: {{ batch_results|length }}
+            </p>
+
+            {% for item in batch_results %}
+
+                <div class="batch-item">
+
+                    <h3>Email {{ loop.index }}</h3>
+
+                    <p>
+                        {{ item.email[:200] }}
+                    </p>
+
+                    <p style="margin-top: 10px;">
+                        Result:
+
+                        {% if item.prediction == 'SPAM' %}
+                            <span style="color: #dc2626; font-weight: 700;">
+                                SPAM
+                            </span>
+                        {% else %}
+                            <span style="color: #059669; font-weight: 700;">
+                                NOT SPAM
+                            </span>
+                        {% endif %}
+                    </p>
+
+                    <p>
+                        Confidence: <strong>{{ item.confidence }}%</strong>
+                    </p>
+
+                    {% if item.spam_indicators %}
+
+                        <p style="margin-top: 10px;">
+                            <strong>Top Contributing Words:</strong>
+                        </p>
+
+                        <div class="indicator-list">
+
+                            {% for word in item.spam_indicators %}
+                                <span class="indicator">{{ word }}</span>
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+        </section>
+
+    {% endif %}
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p><strong>AI-Based Email Spam Classification System</strong></p>
+        <p>Powered by TF-IDF and Machine Learning</p>
+    </footer>
+
+</main>
+
+</body>
+
+<script>
+    document.querySelectorAll('.progress-bar').forEach(function(bar) {
+        const confidence = parseFloat(bar.dataset.confidence) || 0;
+        bar.style.width = Math.min(100, Math.max(0, confidence)) + '%';
+    });
+</script>
+
+</html>

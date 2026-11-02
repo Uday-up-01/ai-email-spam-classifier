@@ -1,0 +1,11 @@
+{
+  "total_emails_after_cleaning": 5808,
+  "ham": 4091,
+  "spam": 1717,
+  "train_size": 4646,
+  "test_size": 1162,
+  "tfidf_features": 3000,
+  "test_size_fraction": 0.2,
+  "random_state": 42,
+  "note": "TF-IDF fitted on training data only."
+}

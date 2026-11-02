@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered email security and spam detection dashboard.">
+
+    <title>SecureMail AI | Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-icon">S</div>
+            <div>
+                <h2>SecureMail</h2>
+                <span>AI SECURITY</span>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <p class="sidebar-heading">WORKSPACE</p>
+
+            <a href="{{ url_for('dashboard') }}" class="sidebar-link active">
+                <span>▦</span> Dashboard
+            </a>
+
+            <a href="{{ url_for('index') }}" class="sidebar-link">
+                <span>✉</span> Email Scanner
+            </a>
+
+            <a href="{{ url_for('history') }}" class="sidebar-link">
+                <span>◷</span> Scan History
+            </a>
+        </div>
+
+        <div class="sidebar-section">
+            <p class="sidebar-heading">SYSTEM</p>
+
+            <a href="#model-info" class="sidebar-link">
+                <span>✧</span> AI Model
+            </a>
+
+            <a href="#about" class="sidebar-link">
+                <span>ⓘ</span> About Project
+            </a>
+        </div>
+
+        <div class="sidebar-bottom">
+            <div class="security-status">
+                <span class="status-dot"></span>
+                <div>
+                    <strong>System Online</strong>
+                    <small>AI engine operational</small>
+                </div>
+            </div>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-main">
+
+        <header class="dashboard-header">
+
+            <div>
+                <p class="breadcrumb">Workspace / Dashboard</p>
+                <h1>Security Dashboard</h1>
+                <p class="header-subtitle">
+                    Monitor and manage your email security with AI.
+                </p>
+            </div>
+
+            <div class="header-actions">
+                <span class="online-badge">
+                    <span class="status-dot"></span>
+                    Protection Active
+                </span>
+
+                <button class="theme-toggle" id="themeToggle" type="button">
+                    ◐
+                </button>
+            </div>
+
+        </header>
+
+
+        <!-- WELCOME CARD -->
+        <section class="welcome-card">
+
+            <div>
+                <span class="welcome-label">AI EMAIL PROTECTION</span>
+
+                <h2>Your inbox deserves<br>intelligent protection.</h2>
+
+                <p>
+                    Detect spam emails, identify suspicious messages
+                    and analyze email threats using machine learning.
+                </p>
+
+                <a href="{{ url_for('index') }}" class="dashboard-primary-btn">
+                    Scan an Email <span>→</span>
+                </a>
+            </div>
+
+            <div class="welcome-graphic">
+                <div class="shield-circle">
+                    <div class="shield-icon">✓</div>
+                </div>
+                <div class="graphic-ring ring-one"></div>
+                <div class="graphic-ring ring-two"></div>
+            </div>
+
+        </section>
+
+
+        <!-- STATISTICS -->
+        <section class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <span>Total Scanned</span>
+                    <span class="stat-icon blue">✉</span>
+                </div>
+
+                <h2>{{ total_emails }}</h2>
+                <p>Emails analyzed</p>
+            </div>
+
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <span>Spam Detected</span>
+                    <span class="stat-icon red">⚠</span>
+                </div>
+
+                <h2>{{ spam_count }}</h2>
+                <p>Suspicious emails found</p>
+            </div>
+
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <span>Legitimate Emails</span>
+                    <span class="stat-icon green">✓</span>
+                </div>
+
+                <h2>{{ ham_count }}</h2>
+                <p>Safe classifications</p>
+            </div>
+
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <span>Spam Percentage</span>
+                    <span class="stat-icon purple">%</span>
+                </div>
+
+                <h2>{{ spam_percentage }}%</h2>
+                <p>Of scanned emails</p>
+            </div>
+
+        </section>
+
+
+        <!-- LOWER SECTION -->
+        <section class="dashboard-grid">
+
+            <div class="dashboard-panel">
+
+                <div class="panel-header">
+                    <div>
+                        <h3>Email Classification</h3>
+                        <p>Distribution of analyzed emails</p>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas
+                        id="emailChart"
+                        data-spam="{{ spam_count }}"
+                        data-ham="{{ ham_count }}">
+                    </canvas>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-panel" id="model-info">
+
+                <div class="panel-header">
+                    <div>
+                        <h3>AI Model Performance</h3>
+                        <p>Optimized classification model</p>
+                    </div>
+                </div>
+
+                <div class="model-info">
+
+                    <div class="model-name">
+                        <div class="model-icon">AI</div>
+                        <div>
+                            <strong>Logistic Regression</strong>
+                            <small>TF-IDF Feature Extraction</small>
+                        </div>
+                    </div>
+
+                    <div class="performance-item">
+                        <span>Accuracy</span>
+                        <strong>98.54%</strong>
+                    </div>
+
+                    <div class="performance-item">
+                        <span>Precision</span>
+                        <strong>97.12%</strong>
+                    </div>
+
+                    <div class="performance-item">
+                        <span>Recall</span>
+                        <strong>97.97%</strong>
+                    </div>
+
+                    <div class="performance-item">
+                        <span>F1 Score</span>
+                        <strong>97.54%</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+                <!-- DAILY EMAIL ANALYTICS -->
+        <section class="dashboard-panel analytics-panel">
+
+            <div class="panel-header">
+                <div>
+                    <h3>Daily Email Activity</h3>
+                    <p>Email scanning and spam detection trends over the last 7 days</p>
+                </div>
+            </div>
+
+            <div class="chart-container" style="height: 320px;">
+                
+                <canvas
+                    id="dailyActivityChart"
+                    data-labels='{{ daily_labels | tojson }}'
+                    data-total='{{ daily_total | tojson }}'
+                    data-spam='{{ daily_spam | tojson }}'
+                    data-ham='{{ daily_ham | tojson }}'>
+                </canvas>
+            
+            </div>
+
+        </section>
+
+        <!-- RECENT ACTIVITY -->
+        <section class="dashboard-panel recent-panel">
+
+            <div class="panel-header">
+                <div>
+                    <h3>Recent Email Activity</h3>
+                    <p>Latest classification records</p>
+                </div>
+
+                <a href="{{ url_for('history') }}" class="view-all">
+                    View All →
+                </a>
+            </div>
+
+            {% if recent_records %}
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Prediction</th>
+                            <th>Confidence</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for record in recent_records %}
+                        <tr>
+                            <td class="email-cell">
+                                {{ record.Email[:65] }}{% if record.Email|length > 65 %}...{% endif %}
+                            </td>
+
+                            <td>
+                                {% if record.Prediction == 'SPAM' %}
+                                    <span class="prediction-badge spam-badge">SPAM</span>
+                                {% else %}
+                                    <span class="prediction-badge ham-badge">NOT SPAM</span>
+                                {% endif %}
+                            </td>
+
+                            <td>{{ record.Confidence }}</td>
+                            <td>{{ record.Date }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+            {% else %}
+
+            <div class="empty-state">
+                <div>✉</div>
+                <h4>No email activity yet</h4>
+                <p>Start scanning emails to see your activity here.</p>
+                <a href="{{ url_for('index') }}" class="dashboard-primary-btn">
+                    Scan First Email →
+                </a>
+            </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <footer class="dashboard-footer" id="about">
+            <p>SecureMail AI · Intelligent Email Spam Classification System</p>
+            <span>Powered by Machine Learning</span>
+        </footer>
+
+    </main>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+// =====================================
+// 1. DARK MODE
+// =====================================
+
+const themeToggle = document.getElementById('themeToggle');
+
+// Restore previously selected theme
+if (localStorage.getItem('securemail-theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+}
+
+// Toggle dark mode
+themeToggle.addEventListener('click', function() {
+
+    document.body.classList.toggle('dark-mode');
+
+    const darkMode = document.body.classList.contains('dark-mode');
+
+    localStorage.setItem(
+        'securemail-theme',
+        darkMode ? 'dark' : 'light'
+    );
+
+});
+
+
+// =====================================
+// 2. EMAIL CLASSIFICATION DOUGHNUT
+// =====================================
+
+try {
+
+    const chartElement = document.getElementById('emailChart');
+
+    const spamCount = Number(chartElement.dataset.spam);
+    const hamCount = Number(chartElement.dataset.ham);
+
+    new Chart(chartElement, {
+
+        type: 'doughnut',
+
+        data: {
+
+            labels: ['Spam', 'Legitimate'],
+
+            datasets: [{
+
+                data: [spamCount, hamCount],
+
+                backgroundColor: ['#f05265', '#22c58b'],
+
+                borderWidth: 0,
+
+                hoverOffset: 8
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+
+                    position: 'bottom',
+
+                    labels: {
+
+                        usePointStyle: true,
+
+                        padding: 20
+
+                    }
+
+                }
+
+            },
+
+            cutout: '72%'
+
+        }
+
+    });
+
+} catch (error) {
+
+    console.error('Email classification chart error:', error);
+
+}
+
+
+// =====================================
+// 3. DAILY EMAIL ACTIVITY CHART
+// =====================================
+
+try {
+
+    const dailyChartElement = document.getElementById(
+        'dailyActivityChart'
+    );
+
+    const dailyLabels = JSON.parse(
+        dailyChartElement.dataset.labels
+    );
+
+    const dailyTotal = JSON.parse(
+        dailyChartElement.dataset.total
+    );
+
+    const dailySpam = JSON.parse(
+        dailyChartElement.dataset.spam
+    );
+
+    const dailyHam = JSON.parse(
+        dailyChartElement.dataset.ham
+    );
+
+    new Chart(dailyChartElement, {
+
+        type: 'line',
+
+        data: {
+
+            labels: dailyLabels,
+
+            datasets: [
+
+                {
+
+                    label: 'Total Emails',
+
+                    data: dailyTotal,
+
+                    borderColor: '#5145e5',
+
+                    backgroundColor: 'rgba(81, 69, 229, 0.10)',
+
+                    borderWidth: 3,
+
+                    tension: 0.4,
+
+                    fill: true
+
+                },
+
+                {
+
+                    label: 'Spam Emails',
+
+                    data: dailySpam,
+
+                    borderColor: '#f05265',
+
+                    borderWidth: 3,
+
+                    tension: 0.4,
+
+                    fill: false
+
+                },
+
+                {
+
+                    label: 'Legitimate Emails',
+
+                    data: dailyHam,
+
+                    borderColor: '#22c58b',
+
+                    borderWidth: 3,
+
+                    tension: 0.4,
+
+                    fill: false
+
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            interaction: {
+
+                intersect: false,
+
+                mode: 'index'
+
+            },
+
+            plugins: {
+
+                legend: {
+
+                    position: 'bottom'
+
+                }
+
+            },
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    ticks: {
+
+                        precision: 0
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+} catch (error) {
+
+    console.error('Daily activity chart error:', error);
+
+}
+
+</script>
+
+</body>
+</html>
